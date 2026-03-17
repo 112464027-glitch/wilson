@@ -1,0 +1,11 @@
+# env - 千萬不要上傳！
+.env.local
+.env
+
+# Next.js
+.next/
+node_modules/
+out/
+
+# OS
+.DS_Store
