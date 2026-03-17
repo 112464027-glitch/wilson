@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>小白的飲食叮嚀</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+:root {
+  --bg: #FFFFFF;
+  --surface: #FFF9F5;
+  --surface2: #FFF2E8;
+  --border: #FFD9BE;
+  --border-light: #FFE9D8;
+  --text: #2C1A0E;
+  --text-muted: #A07858;
+  --accent: #FF8C42;
+  --accent-light: #FFF0E6;
+  --accent-dark: #D96A20;
+  --blue: #4AB8D8;
+  --blue-light: #E6F7FC;
+  --green: #52C47A;
+  --green-light: #E6F9EE;
+  --red: #F06060;
+  --red-light: #FEE8E8;
+  --yellow: #F5C842;
+  --yellow-light: #FEF7DC;
+  --shadow: 0 4px 24px rgba(255,140,66,0.10);
+  --shadow-sm: 0 2px 10px rgba(255,140,66,0.08);
+  --shadow-card: 0 2px 12px rgba(44,26,14,0.06);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: 'Noto Sans TC', sans-serif;
+  background: #FFF6EF;
+  min-height: 100vh;
+  color: var(--text);
+}
+
+.app {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 0 0 88px;
+  min-height: 100vh;
+  background: #FFF6EF;
+}
+
+/* ─── HEADER ─── */
+.header {
+  background: white;
+  border-bottom: 1.5px solid var(--border-light);
+  padding: 14px 20px 12px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 2px 12px rgba(255,140,66,0.07);
+}
+.header-title { font-family: 'Nunito', sans-serif; font-size: 20px; font-weight: 800; color: var(--text); }
+.header-sub { font-size: 11.5px; color: var(--text-muted); margin-top: 1px; }
+
+/* ─── DOG ─── */
+.dog-section {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+  padding: 18px 20px 0;
+  animation: slideIn 0.5s ease;
+}
+@keyframes slideIn { from { opacity:0; transform:translateY(14px); } to { opacity:1; transform:none; } }
+
+.dog-wrap { flex-shrink: 0; }
+
+.dog-bubble {
+  background: white;
+  border: 1.5px solid var(--border);
+  border-radius: 18px 18px 18px 4px;
+  padding: 11px 14px;
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--text);
+  box-shadow: var(--shadow-sm);
+  flex: 1;
+  animation: pop 0.3s cubic-bezier(0.34,1.56,0.64,1);
+}
+@keyframes pop { from { transform: scale(0.85); opacity:0; } to { transform:scale(1); opacity:1; } }
+.dog-bubble strong { color: var(--accent); font-family: 'Nunito', sans-serif; }
+
+.dog-name {
+  font-family: 'Nunito', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+  margin-top: 5px;
+  text-align: center;
+}
+
+/* ─── TABS ─── */
+.tabs {
+  display: flex;
+  margin: 14px 20px;
+  background: white;
+  border-radius: 14px;
+  padding: 4px;
+  border: 1.5px solid var(--border-light);
+  box-shadow: var(--shadow-card);
+}
+.tab {
+  flex: 1;
+  padding: 8px 4px;
+  font-size: 13px;
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  border: none;
+  background: none;
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+.tab.active {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 2px 8px rgba(255,140,66,0.3);
+}
+
+/* ─── CARDS ─── */
+.card {
+  background: white;
+  border-radius: 18px;
+  border: 1.5px solid var(--border-light);
+  padding: 16px;
+  margin: 0 20px 12px;
+  box-shadow: var(--shadow-card);
+}
+.card-title {
+  font-family: 'Nunito', sans-serif;
+  font-size: 15px;
+  font-weight: 800;
+  color: var(--text);
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ─── UPLOAD ─── */
+.upload-zone {
+  border: 2px dashed var(--border);
+  border-radius: 16px;
+  padding: 26px 20px;
+  text-align: center;
+  cursor: pointer;
+  background: white;
+  transition: all 0.2s;
+  margin: 0 20px 12px;
+  box-shadow: var(--shadow-card);
+}
+.upload-zone:hover { border-color: var(--accent); background: var(--accent-light); }
+.upload-zone .upload-emoji { font-size: 36px; margin-bottom: 8px; }
+.upload-zone h3 { font-family:'Nunito',sans-serif; font-size: 15px; font-weight: 800; color: var(--text); }
+.upload-zone p { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+#file-input { display: none; }
+
+.preview-img {
+  width: calc(100% - 40px);
+  max-height: 200px;
+  object-fit: cover;
+  border-radius: 14px;
+  margin: 0 20px 12px;
+  border: 1.5px solid var(--border-light);
+  display: none;
+  box-shadow: var(--shadow-card);
+}
+
+/* ─── SUPPLEMENT BOX ─── */
+.supplement-box {
+  margin: 0 20px 12px;
+  display: none;
+}
+.supplement-label {
+  font-size: 12.5px;
+  color: var(--text-muted);
+  font-family: 'Nunito', sans-serif;
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.supplement-hint {
+  font-size: 11px;
+  color: #C4A898;
+  margin-bottom: 7px;
+  line-height: 1.5;
+}
+.supplement-textarea {
+  width: 100%;
+  padding: 11px 13px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  background: white;
+  font-size: 13.5px;
+  font-family: 'Noto Sans TC', sans-serif;
+  color: var(--text);
+  resize: none;
+  line-height: 1.6;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-shadow: var(--shadow-card);
+}
+.supplement-textarea:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(255,140,66,0.12); }
+.supplement-textarea::placeholder { color: #C4A898; }
+
+/* ─── MEAL ROW ─── */
+.meal-row {
+  align-items: center;
+  gap: 10px;
+  margin: 0 20px 12px;
+  display: none;
+}
+.meal-row label { font-size: 13px; color: var(--text-muted); white-space: nowrap; font-family:'Nunito',sans-serif; font-weight:700; }
+.meal-row select {
+  flex:1;
+  padding: 9px 12px;
+  border-radius: 10px;
+  border: 1.5px solid var(--border);
+  background: white;
+  font-size: 14px;
+  font-family: 'Noto Sans TC', sans-serif;
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: var(--shadow-card);
+}
+
+/* ─── BUTTONS ─── */
+.btn {
+  display: block;
+  width: calc(100% - 40px);
+  margin: 0 20px 12px;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.btn-primary {
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 4px 0 var(--accent-dark), 0 4px 16px rgba(255,140,66,0.25);
+}
+.btn-primary:hover { transform: translateY(-1px); box-shadow: 0 5px 0 var(--accent-dark), 0 6px 20px rgba(255,140,66,0.30); }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 2px 0 var(--accent-dark); }
+.btn-primary:disabled { background: #F0E0D4; color: #C4A898; box-shadow: none; cursor: not-allowed; }
+.btn-outline {
+  background: white;
+  color: var(--text);
+  border: 1.5px solid var(--border);
+  box-shadow: var(--shadow-card);
+}
+.btn-outline:hover { background: var(--accent-light); border-color: var(--accent); }
+
+/* ─── LOADING ─── */
+.loading-section {
+  display: none;
+  text-align: center;
+  padding: 28px 20px;
+}
+.paw-loader { display: flex; justify-content: center; gap: 8px; margin-bottom: 12px; }
+.paw-loader span { font-size: 22px; animation: pawBounce 0.9s ease infinite; }
+.paw-loader span:nth-child(2) { animation-delay: 0.18s; }
+.paw-loader span:nth-child(3) { animation-delay: 0.36s; }
+@keyframes pawBounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-10px)} }
+.loading-section p { font-size: 14px; color: var(--text-muted); }
+
+/* ─── RESULT ─── */
+.result-section { display: none; }
+
+.food-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.food-tag {
+  background: var(--accent-light);
+  color: var(--accent-dark);
+  font-size: 12px;
+  font-weight: 700;
+  font-family: 'Nunito', sans-serif;
+  padding: 4px 11px;
+  border-radius: 99px;
+  border: 1px solid var(--border);
+}
+
+.macro-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.macro-box {
+  border-radius: 13px;
+  padding: 11px 6px;
+  text-align: center;
+  border: 1.5px solid transparent;
+}
+.macro-num { font-family:'Nunito',sans-serif; font-size: 21px; font-weight: 800; }
+.macro-lbl { font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+.macro-unit { font-size: 10px; color: var(--text-muted); }
+
+.cal-box { background: var(--accent-light); border-color: var(--border); }
+.cal-box .macro-num { color: var(--accent); }
+.pro-box { background: var(--blue-light); border-color: #C2E8F5; }
+.pro-box .macro-num { color: var(--blue); }
+.carb-box { background: var(--green-light); border-color: #B8EDCE; }
+.carb-box .macro-num { color: var(--green); }
+.fat-box { background: var(--red-light); border-color: #FBCACA; }
+.fat-box .macro-num { color: var(--red); }
+
+.bar-row { margin-bottom: 11px; }
+.bar-meta { display: flex; justify-content: space-between; font-size: 12.5px; color: var(--text-muted); margin-bottom: 5px; }
+.bar-track { background: #F5EEE8; border-radius: 99px; height: 10px; overflow: hidden; }
+.bar-fill { height: 100%; border-radius: 99px; transition: width 0.7s cubic-bezier(0.34,1,0.64,1); }
+
+.score-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--green-light);
+  color: #2A8A52;
+  border-radius: 10px;
+  padding: 6px 12px;
+  font-family: 'Nunito', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  border: 1px solid #B8EDCE;
+}
+.score-badge.mid { background: var(--yellow-light); color: #9A7C10; border-color: #F0DC90; }
+.score-badge.low { background: var(--red-light); color: #B84040; border-color: #FBCACA; }
+
+.advice-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border-light);
+  font-size: 13.5px;
+  line-height: 1.6;
+}
+.advice-item:last-child { border-bottom: none; }
+.advice-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ─── HISTORY ─── */
+.history-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--border-light);
+}
+.history-item:last-child { border-bottom: none; }
+.history-thumb {
+  width: 52px; height: 52px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--surface2);
+  flex-shrink: 0;
+  border: 1.5px solid var(--border-light);
+}
+.history-info h4 { font-family:'Nunito',sans-serif; font-size: 14px; font-weight: 700; color: var(--text); }
+.history-info p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+.history-cal { margin-left:auto; font-family:'Nunito',sans-serif; font-size:15px; font-weight:800; color:var(--accent); flex-shrink:0; text-align:right; }
+
+.empty-state { text-align:center; padding: 32px 20px; color: var(--text-muted); font-size: 14px; line-height:1.8; }
+.empty-state .empty-icon { font-size: 48px; margin-bottom: 12px; }
+
+/* ─── SUMMARY ─── */
+.summary-big {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.sum-box {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 13px 8px;
+  text-align: center;
+  border: 1.5px solid var(--border-light);
+}
+.sum-num { font-family:'Nunito',sans-serif; font-size: 22px; font-weight: 800; color: var(--text); }
+.sum-lbl { font-size: 11px; color: var(--text-muted); margin-top: 3px; }
+
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <!-- HEADER -->
+  <div class="header">
+    <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="9.5" cy="13" rx="5.5" ry="7.5" fill="#FFD9BE" transform="rotate(-18 9.5 13)"/>
+      <ellipse cx="24.5" cy="13" rx="5.5" ry="7.5" fill="#FFD9BE" transform="rotate(18 24.5 13)"/>
+      <ellipse cx="17" cy="19" rx="12" ry="11" fill="white" stroke="#FFD9BE" stroke-width="1.2"/>
+      <circle cx="13" cy="16.5" r="2" fill="#2C1A0E"/>
+      <circle cx="21" cy="16.5" r="2" fill="#2C1A0E"/>
+      <circle cx="13.8" cy="15.8" r="0.7" fill="white"/>
+      <circle cx="21.8" cy="15.8" r="0.7" fill="white"/>
+      <ellipse cx="17" cy="20.5" rx="2.5" ry="1.8" fill="#F4A07A"/>
+      <path d="M14.5 23 Q17 25.5 19.5 23" stroke="#F4A07A" stroke-width="1.3" fill="none" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <div class="header-title">小白的飲食叮嚀</div>
+      <div class="header-sub">營養小管家 🐾</div>
+    </div>
+  </div>
+
+  <!-- DOG + BUBBLE -->
+  <div class="dog-section">
+    <div class="dog-wrap">
+      <svg width="88" height="100" viewBox="0 0 88 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M70 74 Q84 58 78 48" stroke="#FFD9BE" stroke-width="5.5" stroke-linecap="round" fill="none"/>
+        <ellipse cx="44" cy="78" rx="27" ry="21" fill="white" stroke="#FFD9BE" stroke-width="1.5"/>
+        <ellipse cx="23" cy="27" rx="9" ry="13.5" fill="#FFD9BE" transform="rotate(-22 23 27)"/>
+        <ellipse cx="23" cy="28" rx="6" ry="9" fill="#FFF0E6" transform="rotate(-22 23 28)"/>
+        <ellipse cx="65" cy="27" rx="9" ry="13.5" fill="#FFD9BE" transform="rotate(22 65 27)"/>
+        <ellipse cx="65" cy="28" rx="6" ry="9" fill="#FFF0E6" transform="rotate(22 65 28)"/>
+        <ellipse cx="44" cy="42" rx="26" ry="24" fill="white" stroke="#FFD9BE" stroke-width="1.5"/>
+        <circle cx="35" cy="38" r="4.2" fill="#2C1A0E"/>
+        <circle cx="53" cy="38" r="4.2" fill="#2C1A0E"/>
+        <circle cx="36.7" cy="36.5" r="1.6" fill="white"/>
+        <circle cx="54.7" cy="36.5" r="1.6" fill="white"/>
+        <ellipse cx="44" cy="46" rx="5.5" ry="3.8" fill="#F4A07A"/>
+        <path d="M39 51.5 Q44 57 49 51.5" stroke="#F4A07A" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <rect x="22" y="90" width="13" height="9" rx="6.5" fill="white" stroke="#FFD9BE" stroke-width="1.5"/>
+        <rect x="53" y="90" width="13" height="9" rx="6.5" fill="white" stroke="#FFD9BE" stroke-width="1.5"/>
+      </svg>
+      <div class="dog-name">小白</div>
+    </div>
+    <div class="dog-bubble" id="dog-bubble">
+      汪！🐾 歡迎回來～<br>
+      把今天吃的東西<strong>拍給我看</strong>，<br>
+      我來幫你分析！
+    </div>
+  </div>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab active" onclick="switchTab('upload')">📷 拍照</button>
+    <button class="tab" onclick="switchTab('history')">📋 紀錄</button>
+    <button class="tab" onclick="switchTab('summary')">📊 今日</button>
+  </div>
+
+  <!-- TAB: UPLOAD -->
+  <div id="tab-upload">
+
+    <div class="upload-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <div class="upload-emoji">🍱</div>
+      <h3>點我上傳食物照片</h3>
+      <p>小白會幫你分析每一口的營養喔！</p>
+    </div>
+    <input type="file" id="file-input" accept="image/*" onchange="handleFile(event)" />
+
+    <img id="preview" class="preview-img" />
+
+    <!-- 文字補充欄 -->
+    <div class="supplement-box" id="supplement-box">
+      <div class="supplement-label">✏️ 補充圖片看不到的東西（選填）</div>
+      <div class="supplement-hint">例如：加了乳清蛋白 30g、醬汁偏多、飯量比較大、還喝了豆漿…</div>
+      <textarea
+        id="supplement-text"
+        class="supplement-textarea"
+        rows="3"
+        placeholder="在這裡補充食材、份量、調味等資訊，AI 分析會更準確 🎯"
+      ></textarea>
+    </div>
+
+    <div class="meal-row" id="meal-row">
+      <label>🍽 這是</label>
+      <select id="meal-type">
+        <option value="早餐">早餐</option>
+        <option value="午餐">午餐</option>
+        <option value="晚餐" selected>晚餐</option>
+        <option value="點心">點心</option>
+        <option value="運動補給">運動補給</option>
+      </select>
+    </div>
+
+    <button class="btn btn-primary" id="analyze-btn" disabled onclick="analyzeFood()">🔍 分析這餐的營養</button>
+
+    <div class="loading-section" id="loading">
+      <div class="paw-loader"><span>🐾</span><span>🐾</span><span>🐾</span></div>
+      <p>小白正在認真分析中...</p>
+    </div>
+
+    <div class="result-section" id="result">
+      <div class="card">
+        <div class="card-title">🥘 辨識到的食物</div>
+        <div class="food-tags" id="food-tags"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">⚡ 營養成分</div>
+        <div class="macro-grid" style="margin-bottom:14px;">
+          <div class="macro-box cal-box"><div class="macro-num" id="r-cal">—</div><div class="macro-unit">kcal</div><div class="macro-lbl">熱量</div></div>
+          <div class="macro-box pro-box"><div class="macro-num" id="r-pro">—</div><div class="macro-unit">g</div><div class="macro-lbl">蛋白質</div></div>
+          <div class="macro-box carb-box"><div class="macro-num" id="r-carb">—</div><div class="macro-unit">g</div><div class="macro-lbl">碳水</div></div>
+          <div class="macro-box fat-box"><div class="macro-num" id="r-fat">—</div><div class="macro-unit">g</div><div class="macro-lbl">脂肪</div></div>
+        </div>
+        <div id="bars"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">🐾 小白的建議</div>
+        <div id="score-wrap" style="margin-bottom:10px;"></div>
+        <div id="advice-wrap"></div>
+      </div>
+      <button class="btn btn-outline" onclick="saveRecord()">💾 儲存這筆紀錄</button>
+    </div>
+  </div>
+
+  <!-- TAB: HISTORY -->
+  <div id="tab-history" class="hidden">
+    <div class="card">
+      <div class="card-title">📋 飲食紀錄</div>
+      <div id="history-list"></div>
+    </div>
+  </div>
+
+  <!-- TAB: SUMMARY -->
+  <div id="tab-summary" class="hidden">
+    <div id="summary-content"></div>
+  </div>
+
+</div>
+
+<script>
+let records = [];
+try { records = JSON.parse(localStorage.getItem('dog_diet_records') || '[]'); } catch(e){}
+
+let currentImg = null, currentB64 = null, currentResult = null;
+
+const dogMessages = {
+  idle: [
+    '汪！🐾 歡迎回來～<br>把今天吃的東西<strong>拍給我看</strong>，<br>我來幫你分析！',
+    '今天訓練完有補充營養嗎？🏋️<br>快拍給<strong>小白</strong>看看！'
+  ],
+  ready: ['好的！我看到照片了 📸<br>可以在下面<strong>補充圖片看不到的東西</strong>，<br>然後按分析！'],
+  analyzing: ['讓我用我的狗鼻子嗅一嗅...👃<br>馬上知道裡面有什麼！'],
+  good: ['哇！吃得不錯喔！💪<br>繼續保持，<strong>小白</strong>為你驕傲！'],
+  ok: ['還可以，但可以更好！🐾<br>看看<strong>小白的建議</strong>調整一下！'],
+  bad: ['呼...這餐需要注意一下 😅<br>看看<strong>小白的建議</strong>改善吧！'],
+  saved: ['已儲存！汪汪！🎉<br>今天的飲食<strong>小白幫你盯著</strong>！']
+};
+
+function setDogMsg(type) {
+  const msgs = dogMessages[type];
+  const msg = msgs[Math.floor(Math.random() * msgs.length)];
+  const el = document.getElementById('dog-bubble');
+  el.style.animation = 'none'; el.offsetHeight;
+  el.style.animation = 'pop 0.3s cubic-bezier(0.34,1.56,0.64,1)';
+  el.innerHTML = msg;
+}
+
+function switchTab(tab) {
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['upload','history','summary'][i]===tab));
+  document.getElementById('tab-upload').classList.toggle('hidden', tab!=='upload');
+  document.getElementById('tab-history').classList.toggle('hidden', tab!=='history');
+  document.getElementById('tab-summary').classList.toggle('hidden', tab!=='summary');
+  if(tab==='history') renderHistory();
+  if(tab==='summary') renderSummary();
+}
+
+function handleFile(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    currentImg = ev.target.result;
+    currentB64 = ev.target.result.split(',')[1];
+    const prev = document.getElementById('preview');
+    prev.src = currentImg; prev.style.display = 'block';
+    document.getElementById('supplement-box').style.display = 'block';
+    document.getElementById('meal-row').style.display = 'flex';
+    document.getElementById('analyze-btn').disabled = false;
+    document.getElementById('result').style.display = 'none';
+    setDogMsg('ready');
+  };
+  reader.readAsDataURL(file);
+}
+
+const dz = document.getElementById('drop-zone');
+dz.addEventListener('dragover', e => { e.preventDefault(); dz.style.borderColor='var(--accent)'; dz.style.background='var(--accent-light)'; });
+dz.addEventListener('dragleave', () => { dz.style.borderColor=''; dz.style.background=''; });
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.style.borderColor=''; dz.style.background='';
+  const f = e.dataTransfer.files[0];
+  if(f && f.type.startsWith('image/')) { const dt=new DataTransfer(); dt.items.add(f); document.getElementById('file-input').files=dt.files; handleFile({target:{files:[f]}}); }
+});
+
+async function analyzeFood() {
+  if(!currentB64) return;
+  const supplement = document.getElementById('supplement-text').value.trim();
+  document.getElementById('loading').style.display = 'block';
+  document.getElementById('result').style.display = 'none';
+  document.getElementById('analyze-btn').disabled = true;
+  setDogMsg('analyzing');
+
+  const userText = supplement
+    ? `請分析這餐的營養並給健身建議。使用者補充說明：${supplement}`
+    : '請分析這餐的營養並給健身建議。';
+
+  try {
+    const res = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        model: "claude-sonnet-4-20250514",
+        max_tokens: 1000,
+        system: `你是一個可愛的小白狗，同時也是專業的運動營養師，幫助健身人士分析飲食。
+分析圖片中的食物，並結合使用者補充的文字說明（如看不到的食材、份量、調味等），以繁體中文回覆，只輸出純 JSON，不加 markdown 或其他文字：
+{
+  "foods": ["食物1","食物2"],
+  "calories": 數字,
+  "protein": 數字,
+  "carbs": 數字,
+  "fat": 數字,
+  "fiber": 數字,
+  "score": 1到10整數,
+  "scoreReason": "一句話",
+  "advice": ["建議1","建議2","建議3"]
+}
+使用者的補充說明非常重要，務必納入熱量與營養計算（如蛋白粉、醬汁、飲料、實際份量等）。foods 列表也要包含補充說明中的食材。
+score 7以上是好，4-6中等，3以下不好。advice 請用活潑親切口氣，可帶入「小白建議你...」風格。
+圖片不是食物時 foods 填 ["無法辨識"]，其他填 0。`,
+        messages: [{ role:"user", content:[
+          { type:"image", source:{ type:"base64", media_type:"image/jpeg", data: currentB64 }},
+          { type:"text", text: userText }
+        ]}]
+      })
+    });
+    const data = await res.json();
+    const text = data.content.map(i=>i.text||'').join('');
+    const parsed = JSON.parse(text.replace(/```json|```/g,'').trim());
+    currentResult = parsed;
+    showResult(parsed);
+  } catch(err) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('analyze-btn').disabled = false;
+    setDogMsg('idle');
+    alert('分析失敗，請重試！');
+  }
+}
+
+function showResult(d) {
+  document.getElementById('loading').style.display = 'none';
+  document.getElementById('result').style.display = 'block';
+  document.getElementById('analyze-btn').disabled = false;
+
+  document.getElementById('food-tags').innerHTML = (d.foods||[]).map(f=>`<span class="food-tag">${f}</span>`).join('');
+  document.getElementById('r-cal').textContent = Math.round(d.calories||0);
+  document.getElementById('r-pro').textContent = Math.round(d.protein||0);
+  document.getElementById('r-carb').textContent = Math.round(d.carbs||0);
+  document.getElementById('r-fat').textContent = Math.round(d.fat||0);
+
+  const bars = [
+    { label:'蛋白質', val:d.protein||0, max:60, color:'#4AB8D8' },
+    { label:'碳水', val:d.carbs||0, max:150, color:'#52C47A' },
+    { label:'脂肪', val:d.fat||0, max:80, color:'#F06060' },
+    { label:'膳食纖維', val:d.fiber||0, max:15, color:'#FF8C42' }
+  ];
+  document.getElementById('bars').innerHTML = bars.map(b=>`
+    <div class="bar-row">
+      <div class="bar-meta"><span>${b.label}</span><span>${Math.round(b.val)}g</span></div>
+      <div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,Math.round(b.val/b.max*100))}%;background:${b.color};"></div></div>
+    </div>`).join('');
+
+  const score = d.score||5;
+  const emoji = score>=7?'🌟':score>=4?'😊':'😅';
+  document.getElementById('score-wrap').innerHTML = `<span class="score-badge ${score>=7?'':score>=4?'mid':'low'}">${emoji} 健身餐評分 ${score}/10　${d.scoreReason||''}</span>`;
+
+  const icons = ['💪','🥛','🥗','⚡','🏋️'];
+  document.getElementById('advice-wrap').innerHTML = (d.advice||[]).map((a,i)=>`
+    <div class="advice-item"><span class="advice-icon">${icons[i%icons.length]}</span><span>${a}</span></div>`).join('');
+
+  setDogMsg(score>=7?'good':score>=4?'ok':'bad');
+}
+
+function saveRecord() {
+  if(!currentResult) return;
+  const meal = document.getElementById('meal-type').value;
+  const supplement = document.getElementById('supplement-text').value.trim();
+  const r = {
+    id: Date.now(),
+    date: new Date().toLocaleDateString('zh-TW'),
+    time: new Date().toLocaleTimeString('zh-TW',{hour:'2-digit',minute:'2-digit'}),
+    meal, imgSrc: currentImg, supplement,
+    ...currentResult
+  };
+  records.unshift(r);
+  if(records.length>30) records=records.slice(0,30);
+  try { localStorage.setItem('dog_diet_records', JSON.stringify(records)); } catch(e){}
+  setDogMsg('saved');
+}
+
+function renderHistory() {
+  const el = document.getElementById('history-list');
+  if(records.length===0) {
+    el.innerHTML=`<div class="empty-state"><div class="empty-icon">🐾</div>還沒有紀錄喔<br>快去拍張食物照片吧！</div>`;
+    return;
+  }
+  el.innerHTML = records.map(r=>`
+    <div class="history-item">
+      ${r.imgSrc?`<img class="history-thumb" src="${r.imgSrc}"/>`:`<div class="history-thumb" style="display:flex;align-items:center;justify-content:center;font-size:20px;">🍱</div>`}
+      <div class="history-info">
+        <h4>${r.meal}　${(r.foods||[]).slice(0,2).join('、')}</h4>
+        <p>${r.date} ${r.time}　蛋白質 ${Math.round(r.protein||0)}g　評分 ${r.score||'?'}/10</p>
+        ${r.supplement?`<p style="margin-top:2px;color:#C4A898;font-size:11px;">📝 ${r.supplement.slice(0,28)}${r.supplement.length>28?'…':''}</p>`:''}
+      </div>
+      <div class="history-cal">${Math.round(r.calories||0)}<br><span style="font-size:10px;color:var(--text-muted);">kcal</span></div>
+    </div>`).join('');
+}
+
+function renderSummary() {
+  const today = new Date().toLocaleDateString('zh-TW');
+  const todayR = records.filter(r=>r.date===today);
+  const el = document.getElementById('summary-content');
+  if(todayR.length===0) {
+    el.innerHTML=`<div class="card"><div class="empty-state"><div class="empty-icon">🌙</div>今天還沒有紀錄<br>去分析第一餐吧！</div></div>`;
+    return;
+  }
+  const tot = { cal:0,pro:0,carb:0,fat:0 };
+  todayR.forEach(r=>{ tot.cal+=r.calories||0; tot.pro+=r.protein||0; tot.carb+=r.carbs||0; tot.fat+=r.fat||0; });
+  const avgScore = Math.round(todayR.reduce((a,r)=>a+(r.score||5),0)/todayR.length);
+  const proTarget=160, carbTarget=300, fatTarget=80;
+  el.innerHTML = `
+    <div class="card">
+      <div class="card-title">📊 今日總覽</div>
+      <div class="summary-big">
+        <div class="sum-box"><div class="sum-num">${Math.round(tot.cal)}</div><div class="sum-lbl">總熱量 kcal</div></div>
+        <div class="sum-box"><div class="sum-num">${todayR.length}</div><div class="sum-lbl">共 ${todayR.length} 餐</div></div>
+        <div class="sum-box"><div class="sum-num">${avgScore}/10</div><div class="sum-lbl">平均評分</div></div>
+      </div>
+      <div class="bar-row"><div class="bar-meta"><span>蛋白質</span><span>${Math.round(tot.pro)}g / ${proTarget}g</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,Math.round(tot.pro/proTarget*100))}%;background:#4AB8D8;"></div></div></div>
+      <div class="bar-row"><div class="bar-meta"><span>碳水化合物</span><span>${Math.round(tot.carb)}g / ${carbTarget}g</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,Math.round(tot.carb/carbTarget*100))}%;background:#52C47A;"></div></div></div>
+      <div class="bar-row"><div class="bar-meta"><span>脂肪</span><span>${Math.round(tot.fat)}g / ${fatTarget}g</span></div><div class="bar-track"><div class="bar-fill" style="width:${Math.min(100,Math.round(tot.fat/fatTarget*100))}%;background:#F06060;"></div></div></div>
+    </div>
+    <div class="card">
+      <div class="card-title">🍽 今日餐點</div>
+      ${todayR.map(r=>`
+        <div class="history-item">
+          ${r.imgSrc?`<img class="history-thumb" src="${r.imgSrc}"/>`:`<div class="history-thumb" style="display:flex;align-items:center;justify-content:center;font-size:20px;">🍱</div>`}
+          <div class="history-info">
+            <h4>${r.meal}</h4>
+            <p>${(r.foods||[]).slice(0,3).join('、')}</p>
+            ${r.supplement?`<p style="font-size:11px;color:#C4A898;margin-top:2px;">📝 ${r.supplement.slice(0,28)}${r.supplement.length>28?'…':''}</p>`:''}
+          </div>
+          <div class="history-cal">${Math.round(r.calories||0)}<br><span style="font-size:10px;color:var(--text-muted);">kcal</span></div>
+        </div>`).join('')}
+    </div>`;
+}
+
+setDogMsg('idle');
+</script>
+</body>
+</html>
